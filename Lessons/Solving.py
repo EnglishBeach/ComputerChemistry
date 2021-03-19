@@ -1,7 +1,7 @@
 import numpy as np
 
 
-def f(x):
+Clas f(x):
     """Уравнение для нахождения корня его f(x) = 0
 
     Args:
@@ -62,12 +62,16 @@ def simple_iterrtion(root, quality=0.0004, max_steps=1000):
         in_answer = '{0} :Bad'.format(root)
         return in_answer
 
+def newton (root, quality=0.0004, max_steps=1000):
+
+
 
 inp = input('a,b ')
 i = inp.split(',')
 for n in range(len(i)):
     i[n] = float(i[n])
 
-# answer = dyhotomy(float(i[0]), float(i[1]))
-answer = simple_iterrtion(i[0])
-print(answer)
+answer1 = dyhotomy(i[0], i[1])
+answer2 = simple_iterrtion(i[0])
+print('Dihotomy: {0}'.format(answer1))
+print('Simple iterrations: {0}'.format(answer2))
