@@ -11,14 +11,11 @@ def f(x):
         значение функции в точке
     """
     return x**2 + 2 * x - 3
-
-
 def dyhotomy(a, b, quality=0.0004, max_steps=1000):
     root = 0
     step = 0
     if f(a) * f(b) > 0:
         return ('Error')
-
     # Критерий сходимости может быть любой, я выбрал именно относительную ошибку
     while abs(f(b) - f(a) / f(a)) > quality and step < max_steps:
         mid = (a + b) / 2
@@ -35,8 +32,6 @@ def dyhotomy(a, b, quality=0.0004, max_steps=1000):
         in_answer = '{0} :Bad'.format(root)
         return in_answer
     return root
-
-
 def simple_iterrtion(root, quality=0.0004, max_steps=1000):
     """Вычисление корня методом простых итерраций. Очень плохой почти никогда не сходится, 
     а чтобы по-хорошему го использовать нужно знать вид самой функции и алгебраически ее преобразовать, что 
@@ -62,12 +57,17 @@ def simple_iterrtion(root, quality=0.0004, max_steps=1000):
         in_answer = '{0} :Bad'.format(root)
         return in_answer
 
+# def newton (root, quality=0.0004, max_steps=1000):
 
-inp = input('a,b ')
+
+
+inp = input('a,b')
 i = inp.split(',')
 for n in range(len(i)):
     i[n] = float(i[n])
 
-# answer = dyhotomy(float(i[0]), float(i[1]))
-answer = simple_iterrtion(i[0])
-print(answer)
+answer1 = dyhotomy(i[0], i[1])
+answer2 = simple_iterrtion(i[0])
+print('Dihotomy: {0}'.format(answer1))
+print('Simple iterrations: {0}'.format(answer2))
+
