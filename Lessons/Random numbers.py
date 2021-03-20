@@ -32,9 +32,8 @@ class Random_range():
             for i in range(self.sizeX)
         ]
         self.value.append(answer)
-        self.value[self.sizeY -
-                   1][0] = 'Plus %s + %s' % (number_one, number_two)
-        self.sizeX += 1
+        self.value[self.sizeY][0] = 'Plus %s + %s' % (number_one, number_two)
+        self.sizeY += 1
 
     def minus(self, number_one, number_two):
         answer = [
@@ -42,25 +41,24 @@ class Random_range():
             for i in range(self.sizeX)
         ]
         self.value.append(answer)
-        self.value[self.sizeY -
-                   1][0] = 'Minus %s - %s' % (number_one, number_two)
-        self.sizeX += 1
+        self.value[self.sizeY][0] = 'Minus %s - %s' % (number_one, number_two)
+        self.sizeY += 1
 
-    # def sigma(self, row):
+    def sigma(self, row):
 
-    #     for i in range(1, self.sizeX):
-    #         suma += self.value[row][i]
-    #     mid = suma / self.sizeX
+        for i in range(1, self.sizeX):
+            suma += self.value[row][i]
+        mid = suma / self.sizeX
 
-    #     for i in range(1, self.sizeX):
-    #         sigma = (mid - self.value[row][i])**2 / self.sizeX
+        for i in range(1, self.sizeX):
+            sigma = (mid - self.value[row][i])**2 / self.sizeX
 
-    #     self.value.append(sigma)
-    #     self.value[self.sizeY - 1][0] = 'Sigma %s' % (row)
+        self.value.append(sigma)
+        self.value[self.sizeY - 1][0] = 'Sigma %s' % (row)
 
-    #     for i in range(1, self.sizeX):
-    #         suma += self.value[row][i]
-    #         self.value.append[(suma)
+        for i in range(1, self.sizeX):
+            suma += self.value[row][i]
+            self.value.append[(suma)
 
 
 a = Random_range(name='First', sizeY=3)
