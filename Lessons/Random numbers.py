@@ -3,7 +3,8 @@ import random as rnd
 
 class Random_range():
     """Создание класса для работы со случайными значениями
-    Этот класс сделан для тренировки, лучше использовать Pandas-frame для таких расчетов
+    Этот класс сделан для тренировки, лучше использовать Pandas-frame для таких расчетов или хотя бы numpy. 
+    Но для тренировки так
     """
     def __init__(self, sizeY=2, sizeX=10, name=None):
         """Создание массива рандомных значений
@@ -17,7 +18,7 @@ class Random_range():
         self.value = [[(rnd.random() * 100) // 1 for x in range(sizeX)]
                       for y in range(sizeY)]
         for i in range(self.sizeY):
-            self.value[i].insert(0, 'Row %s' % i)
+            self.value[i].insert(0, 'R%s' % i)
         self.name = name
 
     def print(self):
@@ -26,41 +27,50 @@ class Random_range():
         for i in range(self.sizeY):
             print(self.value[i])
 
-    def plus(self, number_one, number_two):
+    def plus(self, row_one, row_two):
         answer = [
-            self.value[number_one][i] + self.value[number_two][i]
+            self.value[row_one][i] + self.value[row_two][i]
             for i in range(self.sizeX)
         ]
         self.value.append(answer)
-        self.value[self.sizeY][0] = 'Plus %s + %s' % (number_one, number_two)
+        self.value[self.sizeY][0] = '%s + %s' % (self.value[row_one][0], self.value[row_two][0])
         self.sizeY += 1
 
-    def minus(self, number_one, number_two):
+    def minus(self, row_one, row_two):
         answer = [
-            self.value[number_one][i] - self.value[number_two][i]
+            self.value[row_one][i] - self.value[row_two][i]
             for i in range(self.sizeX)
         ]
         self.value.append(answer)
-        self.value[self.sizeY][0] = 'Minus %s - %s' % (number_one, number_two)
+        self.value[self.sizeY][0] = '%s-%s' % (self.value[row_one][0], self.value[row_two][0])
+        
         self.sizeY += 1
 
-    def sigma(self, row):
-
+    def sigma(self, row,deg=2):
+        suma = 0
         for i in range(1, self.sizeX):
             suma += self.value[row][i]
         mid = suma / self.sizeX
+        sigma = []
 
         for i in range(1, self.sizeX):
-            sigma = (mid - self.value[row][i])**2 / self.sizeX
+            sigma.append((mid - self.value[row][i])**deg / self.sizeX)
 
         self.value.append(sigma)
-        self.value[self.sizeY - 1][0] = 'Sigma %s' % (row)
+        self.value[self.sizeY][0] = 'Si%s: %s' % (deg,self.value[row][0])
+        self.sizeY += 1
 
-        for i in range(1, self.sizeX):
-            suma += self.value[row][i]
-            self.value.append[(suma)
+        # for i in range(1, self.sizeX):
+        #     suma += self.value[row][i]
+        #     self.value.append(suma)
 
 
-a = Random_range(name='First', sizeY=3)
-a.plus(1, 2)
+a = Random_range(name='First', sizeY=2)
+a.plus(0, 1)
+a.sigma(0,2)
+a.sigma(1,2)
+a.sigma(2,2)
+a.sigma(0,4)
+a.sigma(1,4)
+a.sigma(2,4)
 a.print()
