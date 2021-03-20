@@ -14,12 +14,12 @@ class Random_range():
             name ([type], optional): [description]. Defaults to None.
         """
         self.qual = qual
-        self.sizeX = sizeX
+        self.sizeX = sizeX+1
         self.sizeY = sizeY
         self.value = [[(rnd.random() * 100) // 1 for x in range(sizeX)]
                       for y in range(sizeY)]
         for i in range(self.sizeY):
-            self.value[i].insert(0, 'R%s' % i)
+            self.value[i].append('R%s' % i)
         self.name = name
 
     def print(self):
@@ -30,7 +30,7 @@ class Random_range():
 
     def plus(self, row_one, row_two):
         answer = [(self.value[row_one][i] + self.value[row_two][i]) //
-                  (1 - self.qual) / self.qual for i in range(self.sizeX)]
+                  (1 / self.qual) / self.qual for i in range(1,self.sizeX)]
         self.value.append(answer)
         self.value[self.sizeY][0] = '%s + %s' % (self.value[row_one][0],
                                                  self.value[row_two][0])
@@ -38,7 +38,7 @@ class Random_range():
 
     def minus(self, row_one, row_two):
         answer = [(self.value[row_one][i] - self.value[row_two][i]) //
-                  (1 - self.qual) / self.qual for i in range(self.sizeX)]
+                  (1 / self.qual) / self.qual for i in range(self.sizeX)]
         self.value.append(answer)
         self.value[self.sizeY][0] = '%s-%s' % (self.value[row_one][0],
                                                self.value[row_two][0])
@@ -54,7 +54,7 @@ class Random_range():
 
         for i in range(1, self.sizeX):
             sigma.append(((mid - self.value[row][i])**deg / self.sizeX) //
-                         (1 - self.qual) / self.qual)
+                         (1 / self.qual) / self.qual)
 
         self.value.append(sigma)
         self.value[self.sizeY][0] = 'Si%s: %s' % (deg, self.value[row][0])
@@ -68,9 +68,9 @@ class Random_range():
 a = Random_range(name='First', sizeY=2)
 a.plus(0, 1)
 a.sigma(0, 2)
-# a.sigma(1, 2)
-# a.sigma(2, 2)
-# a.sigma(0, 4)
-# a.sigma(1, 4)
-# a.sigma(2, 4)
+a.sigma(1, 2)
+a.sigma(2, 2)
+a.sigma(0, 4)
+a.sigma(1, 4)
+a.sigma(2, 4)
 a.print()
