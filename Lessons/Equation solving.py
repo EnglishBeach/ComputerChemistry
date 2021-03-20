@@ -11,6 +11,8 @@ def f(x):
         значение функции в точке
     """
     return x**2 + 2 * x - 3
+
+
 def dyhotomy(a, b, quality=0.0004, max_steps=1000):
     root = 0
     step = 0
@@ -32,10 +34,12 @@ def dyhotomy(a, b, quality=0.0004, max_steps=1000):
         in_answer = '{0} :Bad'.format(root)
         return in_answer
     return root
+
+
 def simple_iterrtion(root, quality=0.0004, max_steps=1000):
     """Вычисление корня методом простых итерраций. Очень плохой почти никогда не сходится, 
     а чтобы по-хорошему го использовать нужно знать вид самой функции и алгебраически ее преобразовать, что 
-    неудобно 
+    невозможно 
 
     Args:
         root ([type]): [description]
@@ -57,9 +61,9 @@ def simple_iterrtion(root, quality=0.0004, max_steps=1000):
         in_answer = '{0} :Bad'.format(root)
         return in_answer
 
+
 # def newton (root, quality=0.0004, max_steps=1000):
-
-
+# Пока не переписан с семинарской работы
 
 inp = input('a,b')
 i = inp.split(',')
@@ -70,4 +74,3 @@ answer1 = dyhotomy(i[0], i[1])
 answer2 = simple_iterrtion(i[0])
 print('Dihotomy: {0}'.format(answer1))
 print('Simple iterrations: {0}'.format(answer2))
-
