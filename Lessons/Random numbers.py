@@ -14,7 +14,7 @@ class Random_range():
             name ([type], optional): [description]. Defaults to None.
         """
         self.qual = qual
-        self.sizeX = sizeX+1
+        self.sizeX = sizeX + 1
         self.sizeY = sizeY
         self.value = [[(rnd.random() * 100) // 1 for x in range(sizeX)]
                       for y in range(sizeY)]
@@ -30,34 +30,42 @@ class Random_range():
 
     def plus(self, row_one, row_two):
         answer = [(self.value[row_one][i] + self.value[row_two][i]) //
-                  (1 / self.qual) / self.qual for i in range(1,self.sizeX)]
+                  (1 / self.qual) / self.qual for i in range(self.sizeX - 1)]
         self.value.append(answer)
-        self.value[self.sizeY][0] = '%s + %s' % (self.value[row_one][0],
-                                                 self.value[row_two][0])
+        name = '%s + %s' % (self.value[row_one][self.sizeX - 1],
+                            self.value[row_two][self.sizeX - 1])
+        self.value[self.sizeY].append(name)
         self.sizeY += 1
 
     def minus(self, row_one, row_two):
         answer = [(self.value[row_one][i] - self.value[row_two][i]) //
-                  (1 / self.qual) / self.qual for i in range(self.sizeX)]
+                  (1 / self.qual) / self.qual for i in range(self.sizeX - 1)]
         self.value.append(answer)
-        self.value[self.sizeY][0] = '%s-%s' % (self.value[row_one][0],
-                                               self.value[row_two][0])
-
+        name = '%s - %s' % (self.value[row_one][self.sizeX - 1],
+                            self.value[row_two][self.sizeX - 1])
+        self.value[self.sizeY].append(name)
         self.sizeY += 1
 
     def sigma(self, row, deg=2):
         suma = 0
-        for i in range(1, self.sizeX):
+        for i in range(self.sizeX - 1):
             suma += self.value[row][i]
         mid = suma / self.sizeX
         sigma = []
 
-        for i in range(1, self.sizeX):
-            sigma.append(((mid - self.value[row][i])**deg / self.sizeX) //
-                         (1 / self.qual) / self.qual)
+        for i in range(self.sizeX - 1):
+            if deg == 1:
+                sigma.append(
+                    (abs(mid - self.value[row][i]) / self.sizeX - 1) //
+                    (1 / self.qual) / self.qual)
+            else:
+                sigma.append(
+                    ((mid - self.value[row][i])**deg / self.sizeX - 1) //
+                    (1 / self.qual) / self.qual)
 
         self.value.append(sigma)
-        self.value[self.sizeY][0] = 'Si%s: %s' % (deg, self.value[row][0])
+        name = 'Si%s: %s' % (deg, self.value[row][self.sizeX - 1])
+        self.value[self.sizeY].append(name)
         self.sizeY += 1
 
         # for i in range(1, self.sizeX):
