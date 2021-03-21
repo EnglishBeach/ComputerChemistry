@@ -30,14 +30,12 @@ class Random_range():
             output = ''
             for x in range(self.sizeX + 1):
                 if type(self.value[y][x]) == str:
-                    output += ' |{0}'.format(self.value[y][x])
+                    output += ' |{0: <14}|'.format(self.value[y][x])
 
                 else:
                     output += ' {0: >10.2e}'.format(self.value[y][x])
 
             print(output)
-
-    # print(self.value[i])
 
     def plus(self, row_one, row_two):
         answer = [(self.value[row_one][i] + self.value[row_two][i]) //
@@ -83,23 +81,59 @@ class Random_range():
         self.value[self.sizeY].append(name)
         self.sizeY += 1
 
-        # for i in range(1, self.sizeX):
-        #     suma += self.value[row][i]
-        #     self.value.append(suma)
+    # def summa (self,row):
 
 
-a = Random_range(name='First', sizeY=2, sizeX=10)
-a.plus(0, 1)
 
-a.sigma(0)
-a.sigma(1)
-a.sigma(2)
 
-a.sigma(0, 4)
-a.sigma(1, 4)
-a.sigma(2, 4)
 
-a.sigma(0, 1)
-a.sigma(1, 1)
-a.sigma(2, 1)
-a.print()
+'''
+    # a = Random_range(name='First', sizeY=2, sizeX=10)
+    # a.plus(0, 1)
+
+    # a.sigma(0)
+    # a.sigma(1)
+    # a.sigma(2)
+
+    # a.sigma(0, 4)
+    # a.sigma(1, 4)
+    # a.sigma(2, 4)
+
+    # a.sigma(0, 1)
+    # a.sigma(1, 1)
+    # a.sigma(2, 1)
+    # a.print()
+'''
+
+for n in range(1):
+    a= Random_range(name = str(n),sizeX=10)
+
+    a.plus(0, 1)
+    a.minus(0,1)
+
+    a.sigma(0)
+    a.sigma(1)
+
+    a.sigma(2)
+    a.sigma(3) 
+
+    a.sigma(0, 4)
+    a.sigma(1, 4)
+
+    a.sigma(2, 4)
+    a.sigma(3, 4)
+
+    a.sigma(0, 1)
+    a.sigma(1, 1)
+
+    a.sigma(2, 1)
+    a.sigma(3, 1)
+    a.print()
+
+    # for s in range(1,a.sizeY//4):
+    #     this_range = a.value[s*4:s*4+4]
+    #     print(this_range)
+
+    #     print()
+
+    
