@@ -25,18 +25,18 @@ class Random_range():
     def print(self):
 
         print("%s's values: " % self.name)
-        
+
         for y in range(self.sizeY):
             output = ''
-            for x in range(self.sizeX+1):
+            for x in range(self.sizeX + 1):
                 if type(self.value[y][x]) == str:
                     output += ' |{0}'.format(self.value[y][x])
-                    
+
                 else:
                     output += ' {0: >10.2e}'.format(self.value[y][x])
-                    
-            
+
             print(output)
+
     # print(self.value[i])
 
     def plus(self, row_one, row_two):
@@ -58,6 +58,12 @@ class Random_range():
         self.sizeY += 1
 
     def sigma(self, row, deg=2):
+        """Возвращает deg- дисперсию. 1 - для модуля
+
+        Args:
+            row ([type]): [description]
+            deg (int, optional): [description]. Defaults to 2.
+        """
         suma = 0
         for i in range(self.sizeX):
             suma += self.value[row][i]
@@ -82,12 +88,18 @@ class Random_range():
         #     self.value.append(suma)
 
 
-a = Random_range(name='First', sizeY=2,sizeX=10)
+a = Random_range(name='First', sizeY=2, sizeX=10)
 a.plus(0, 1)
-a.sigma(0, 2)
-a.sigma(1, 2)
-a.sigma(2, 2)
+
+a.sigma(0)
+a.sigma(1)
+a.sigma(2)
+
 a.sigma(0, 4)
 a.sigma(1, 4)
 a.sigma(2, 4)
+
+a.sigma(0, 1)
+a.sigma(1, 1)
+a.sigma(2, 1)
 a.print()
