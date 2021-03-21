@@ -1,4 +1,10 @@
 import random as rnd
+"""
+    Создает n раз массивы (представлены ниже) из случайных чисел, нужной длины и находит сигму (ниже Si-deg) в 2 и в 
+    других cтепенях (ниже deg), в том числе и в модуля, сравнивает находится ли значения 
+    Si(a) + Si(b) между Si(a+b) и Si(a-b), если да то помечает.
+
+"""
 
 
 class Random_range():
@@ -33,7 +39,7 @@ class Random_range():
                     output += ' |{0: <14}|'.format(self.value[y][x])
 
                 else:
-                    output += ' {0: >10.2e}'.format(self.value[y][x])
+                    output += ' {0: >10.2f}'.format(self.value[y][x])
 
             print(output)
 
@@ -55,11 +61,11 @@ class Random_range():
         self.value[self.sizeY].append(name)
         self.sizeY += 1
 
-    def sigma(self, row, deg=2):
-        """Возвращает deg- дисперсию. 1 - для модуля
+    def findsigma(self, row, deg=2):
+        """Возвращает дисперсию степени deg. 1 - для модуля
 
         Args:
-            row ([type]): [description]
+            row (int) Номер строки
             deg (int, optional): [description]. Defaults to 2.
         """
         suma = 0
@@ -81,59 +87,42 @@ class Random_range():
         self.value[self.sizeY].append(name)
         self.sizeY += 1
 
-    # def summa (self,row):
+    def summa(self, row):
+        suma = 0
+        for i in range(self.sizeX):
+            suma += self.value[row][i]
+        return suma
 
-
-
-
-
-'''
-    # a = Random_range(name='First', sizeY=2, sizeX=10)
-    # a.plus(0, 1)
-
-    # a.sigma(0)
-    # a.sigma(1)
-    # a.sigma(2)
-
-    # a.sigma(0, 4)
-    # a.sigma(1, 4)
-    # a.sigma(2, 4)
-
-    # a.sigma(0, 1)
-    # a.sigma(1, 1)
-    # a.sigma(2, 1)
-    # a.print()
-'''
 
 for n in range(1):
-    a= Random_range(name = str(n),sizeX=10)
+    a = Random_range(name=str(n), sizeX=5)
 
     a.plus(0, 1)
-    a.minus(0,1)
+    a.minus(0, 1)
 
-    a.sigma(0)
-    a.sigma(1)
+    a.findsigma(0)
+    a.findsigma(1)
 
-    a.sigma(2)
-    a.sigma(3) 
+    a.findsigma(2)
+    a.findsigma(3)
 
-    a.sigma(0, 4)
-    a.sigma(1, 4)
+    a.findsigma(0, 4)
+    a.findsigma(1, 4)
 
-    a.sigma(2, 4)
-    a.sigma(3, 4)
+    a.findsigma(2, 4)
+    a.findsigma(3, 4)
 
-    a.sigma(0, 1)
-    a.sigma(1, 1)
+    a.findsigma(0, 1)
+    a.findsigma(1, 1)
 
-    a.sigma(2, 1)
-    a.sigma(3, 1)
-    a.print()
-
-    # for s in range(1,a.sizeY//4):
-    #     this_range = a.value[s*4:s*4+4]
-    #     print(this_range)
-
-    #     print()
-
+    a.findsigma(2, 1)
+    a.findsigma(3, 1)
     
+    a.print()
+    print('Summa of {0} row {1: 5.2f}'.format(a.value[2][a.sizeX], a.summa(2)))
+
+    for s in range(1,a.sizeY//4):
+        this_range = a.value[s*4:s*4+4]
+        print(this_range)
+
+        print()
