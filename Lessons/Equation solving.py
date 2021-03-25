@@ -1,25 +1,33 @@
 import numpy as np
+import random as rnd
 
 
 def f(x):
-    """Уравнение для нахождения корня его f(x) = 0
-
-    Args:
-        x
-
-    Returns:
-        значение функции в точке
+    """
+    Уравнение для нахождения корня его f(x) = 0
     """
     return x**2 + 2 * x - 3
 
 
-def dyhotomy(a, b, quality=0.0004, max_steps=1000):
-    root = 0
+def dyhotomy(a, b, quality=0.01, max_steps=1000):
+    """
+    Нахождение корня уравнения методом Дихотомии
+
+    Args:
+        a (float): Левая граница
+        b (float): Првая граница
+        quality (float, optional): Предел отклонения 2 значений близких к истинному корню. Defaults to 0.01.
+        max_steps (int, optional): Максимальое число шагов. Defaults to 1000.
+    Returns:
+        Error: не сходится вообще
+        Valume :Bad :сходится плохо
+        Valume: значение если сходится хорошо
+    """
     step = 0
     if f(a) * f(b) > 0:
         return ('Error')
     # Критерий сходимости может быть любой, я выбрал именно относительную ошибку
-    while abs(f(b) - f(a) / f(a)) > quality and step < max_steps:
+    while abs((b - a) / a) > quality and step < max_steps:
         mid = (a + b) / 2
         if f(mid) == 0:
             return mid
@@ -28,16 +36,15 @@ def dyhotomy(a, b, quality=0.0004, max_steps=1000):
         else:
             a = mid
         step += 1
-    root = (a + b) / 2
     if step == max_steps:
-        # Если плохая сходимость, но все же есть
-        in_answer = '{0} :Bad'.format(root)
-        return in_answer
-    return root
+        bad_root = '{0} :Bad'.format(mid)
+        return bad_root
+    return mid
 
 
 def simple_iterrtion(root, quality=0.0004, max_steps=1000):
-    """Вычисление корня методом простых итерраций. Очень плохой почти никогда не сходится, 
+    """
+    Вычисление корня методом простых итерраций. Очень плохой почти никогда не сходится, 
     а чтобы по-хорошему го использовать нужно знать вид самой функции и алгебраически ее преобразовать, что 
     невозможно 
 
@@ -58,19 +65,61 @@ def simple_iterrtion(root, quality=0.0004, max_steps=1000):
         elif abs(past_fi - fi(root) / fi(root)) > 1000:
             return 'error'
     if step == max_steps:
-        in_answer = '{0} :Bad'.format(root)
-        return in_answer
+        bad_root = '{0} :Bad'.format(root)
+        return bad_root
 
 
-# def newton (root, quality=0.0004, max_steps=1000):
-# Пока не переписан с семинарской работы
+def newton(x, quality=0.001, max_steps=20):
+    """
+    Решение уравнение методом Ньютона - Рафсона
 
-inp = input('a,b')
-i = inp.split(',')
-for n in range(len(i)):
-    i[n] = float(i[n])
+    Args:
+        x (float): Начальное приблежение корня
+        quality (float, optional): Предел отклонения 2 значений близких к истинному корню. Defaults to 0.01.
+        max_steps (int, optional): Максимальое число шагов. Defaults to 1000.
+    Returns:
+        Error: не сходится вообще
+        Valume: значение если сходится хорошо
+    """
+    x1 = x * 2
 
-answer1 = dyhotomy(i[0], i[1])
-answer2 = simple_iterrtion(i[0])
-print('Dihotomy: {0}'.format(answer1))
-print('Simple iterrations: {0}'.format(answer2))
+    step = 0
+    dx = quality
+    while abs((x1 - x) / x) > quality and step < max_steps:
+        x = x1
+        # Вычисляем производную в х0 по среднему из коэффициентов секущих через х0 и хсправа, х0 и хслева. По теореме Лагранжа о конечных приращениях
+        k = (f(x + dx) - f(x - dx)) / dx
+        x1 = -f(x) / k + x
+        step += 1
+    if step == max_steps:
+        return 'Error'
+    return x1
+
+
+def monte_kristo(a, b, quality=0.001, max_steps=100):
+
+    row_answer = []
+
+    for i in range(max_steps):
+        x = a + (b - a) * rnd.random()
+        row_answer.append([x, abs(f(x))])
+    answer =sorted(row_answer,key=lambda x: x[1])
+    answer.reverse()
+
+    for i in range(max_steps):
+        x = a + (b - a) * rnd.random()
+        fr = abs(f(x))
+        # for n in range(len(answer)):
+        #     if fr< answer[n][1]:
+        #         answer[n][0]= x
+        #         answer[n][1]=fr
+
+        n=0
+        while fr<answer[n][1]:
+            answer[n][0]= x
+            answer[n][1]=fr
+
+
+
+
+
