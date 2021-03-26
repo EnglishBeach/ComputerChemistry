@@ -3,15 +3,13 @@ import random as rnd
 
 
 def f(x):
-    """
-    Уравнение для нахождения корня его f(x) = 0
+    """Уравнение для нахождения корня его f(x) = 0
     """
     return x**2 + 2 * x - 3
 
 
 def dyhotomy(a, b, quality=0.01, max_steps=1000):
-    """
-    Нахождение корня уравнения методом Дихотомии
+    """Нахождение корня уравнения методом Дихотомии
 
     Args:
         a (float): Левая граница
@@ -42,9 +40,8 @@ def dyhotomy(a, b, quality=0.01, max_steps=1000):
     return mid
 
 
-def simple_iterrtion(root, quality=0.0004, max_steps=1000):
-    """
-    Вычисление корня методом простых итерраций. Очень плохой почти никогда не сходится, 
+def simple_iteration(root, quality=0.0004, max_steps=1000):
+    """Вычисление корня методом простых итерраций. Очень плохой почти никогда не сходится, 
     а чтобы по-хорошему го использовать нужно знать вид самой функции и алгебраически ее преобразовать, что 
     невозможно 
 
@@ -70,8 +67,7 @@ def simple_iterrtion(root, quality=0.0004, max_steps=1000):
 
 
 def newton(x, quality=0.001, max_steps=20):
-    """
-    Решение уравнение методом Ньютона - Рафсона
+    """Решение уравнение методом Ньютона - Рафсона
 
     Args:
         x (float): Начальное приблежение корня
@@ -96,17 +92,30 @@ def newton(x, quality=0.001, max_steps=20):
     return x1
 
 
-def monte_kristo(a, b, quality=0.001, max_steps=100):
+def monte_kristo(a, b, quality=1, max_steps=100):
+    """Решение уравнения методом Монте-Карло. Возвращает массив вида:
+            x1 |Y-y1|
+            x2 |Y-y2|
+    Args:
+        a (float): Левая граница
+        b (float): правая граница
+        quality (int, optional): Максимальная ошибка |Y-y|, где Y- значение в корне уравнения, y - значение в приближеннном корне на выводе. 
+        Defaults to 1.
+        max_steps (int, optional): Максимаольное число шагов. Defaults to 100.
 
-    row_answer = []
+    Returns:
+        [type]: [description]
+    """
+
+    root = []
 
     for i in range(max_steps):
         x = a + (b - a) * rnd.random()
-        row_answer.append([x, abs(f(x))])
-    answer =sorted(row_answer,key=lambda x: x[1])
-    answer.reverse()
+        root.append([x, abs(f(x))])
 
     for i in range(max_steps):
+        root = sorted(root, key=lambda x: x[1])
+        root.reverse()
         x = a + (b - a) * rnd.random()
         fr = abs(f(x))
         # for n in range(len(answer)):
@@ -114,12 +123,34 @@ def monte_kristo(a, b, quality=0.001, max_steps=100):
         #         answer[n][0]= x
         #         answer[n][1]=fr
 
-        n=0
-        while fr<answer[n][1]:
-            answer[n][0]= x
-            answer[n][1]=fr
+        if fr < root[0][1]:
+            root[0][0] = x
+            root[0][1] = fr
+        root = sorted(root, key=lambda x: x[1])
+
+        while root[len(root) - 1][1] > quality and len(root) > 1:
+            root.pop()
+        root = sorted(root, key=lambda x: x[1])
+        root.reverse()
+        return root
 
 
+def print2D(f):
+    """
+    Выводит на экран значения всего массива
+    """
+
+    for y in range(len(f)):
+        output = ''
+        for x in range(len(f[0])):
+            if type(f[y][x]) == str:
+                output += ' |{0: <14}|'.format(f[y][x])
+
+            else:
+                output += ' {0: >8.2f}'.format(f[y][x])
+        print(output)
 
 
-
+a = monte_kristo(-10, 10, max_steps=100)
+print('{0: >8} {1: >8}'.format('x', 'y'))
+print2D(a)
