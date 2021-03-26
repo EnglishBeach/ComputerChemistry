@@ -44,7 +44,7 @@ def monte_krist_graph(a, b, maxf, max_steps=10000):
     return area * nsucces / max_steps
 
 
-def monte_krist_analyse(a, b, quality=1, max_steps=10000):
+def monte_krist_analyse(a, b, max_steps=10000):
     """Вычисляет интеграл методом Монте-Карло. Аналитический алгорим: основан на свойстве определенного интеграла 
     (I = (b-a)f(e), е- некоторое число на промежутке)
 
@@ -62,7 +62,10 @@ def monte_krist_analyse(a, b, quality=1, max_steps=10000):
         s += f(xr)
     return s / max_steps*(b-a)
 
-# def trap
+def trap (a, b, quality=1, max_steps=10000)
+
+
+
 a = monte_krist_analyse(0, 2)
 b = monte_krist_graph(0, 2, 10)
 print(a,b)
