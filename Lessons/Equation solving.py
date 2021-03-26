@@ -93,25 +93,23 @@ def newton(x, quality=0.001, max_steps=20):
 
 
 def monte_kristo(a, b, quality=1, max_steps=100):
-    """Решение уравнения методом Монте-Карло. Возвращает массив вида:
-            x1 |Y-y1|
-            x2 |Y-y2|
+    """Решение уравнения методом Монте-Карло. 
     Args:
         a (float): Левая граница
         b (float): правая граница
         quality (int, optional): Максимальная ошибка |Y-y|, где Y- значение в корне уравнения, y - значение в приближеннном корне на выводе. 
         Defaults to 1.
         max_steps (int, optional): Максимаольное число шагов. Defaults to 100.
-
-    Returns:
-        [type]: [description]
+    Возвращает массив вида:
+            x1(float) |Y-y1|(float)
+            x2(float) |Y-y2|(float)
     """
 
     root = []
 
     for i in range(max_steps):
-        x = a + (b - a) * rnd.random()
-        root.append([x, abs(f(x))])
+        xr = a + (b - a) * rnd.random()
+        root.append([xr, abs(f(xr))])
 
     for i in range(max_steps):
         root = sorted(root, key=lambda x: x[1])
