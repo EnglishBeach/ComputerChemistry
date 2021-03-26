@@ -31,9 +31,8 @@ def monte_krist_graph(a, b, maxf, max_steps=10000):
         b (float): Правая граница
         maxf (float): верхняя граница
         max_steps (int, optional): Максимальное число шагов. Defaults to 10000.
-
     Returns:
-        float: Значение интеграла
+        (float): Значение интеграла
     """
     area = maxf * (b - a)
     nsucces = 0
@@ -46,15 +45,15 @@ def monte_krist_graph(a, b, maxf, max_steps=10000):
 
 def monte_krist_analyse(a, b, max_steps=10):
     """Вычисляет интеграл методом Монте-Карло. Аналитический алгорим: основан на свойстве определенного интеграла 
-    (I = (b-a)f(e), е- некоторое число на промежутке)
+        I = (b-a)f(e), 
+        е - некоторое число на промежутке [a;b], f(e) - среднее значение f(x)
 
     Args:
         a (float): Левая граница
         b (float): Правая граница
         max_steps (int, optional): Максимальное число шагов. Defaults to 10000.
-
     Returns:
-        float: Значение интеграла
+        (float): Значение интеграла
     """
     s = 0
     for i in range(max_steps):
@@ -64,6 +63,15 @@ def monte_krist_analyse(a, b, max_steps=10):
 
 
 def trap(a, b, max_steps=10000):
+    """Вычисляет интеграл методом трапеций
+
+    Args:
+        a (float): Левая граница
+        b (float): Правая граница
+        max_steps (int, optional): Максимальное число шагов. Defaults to 10000.
+    Returns:
+        (float): Значение интеграла
+    """
     dx = (b - a) / max_steps
     s = 0
     for i in range(max_steps):
@@ -72,6 +80,15 @@ def trap(a, b, max_steps=10000):
 
 
 def kotes(a, b, n=3):
+    """Вычисляет интеграл методом Котеса
+
+    Args:
+        a (float): Левая граница
+        b (float): Правая граница
+        n (int, optional): Число Котеса.
+    Returns:
+        (float): Значение интеграла
+    """
     dx = (b - a) / n
     s = 0
     A = []
@@ -103,5 +120,5 @@ def kotes(a, b, n=3):
 a = monte_krist_analyse(0, 2, max_steps=10000)
 b = monte_krist_graph(0, 2, 10)
 c = trap(0, 2)
-d = kotes(0,2)
+d = kotes(0, 2)
 print(a, b, c, d)
