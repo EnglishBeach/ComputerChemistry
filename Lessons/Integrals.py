@@ -1,6 +1,7 @@
 import random as rnd
 
 
+
 def print2D(f):
     """
     Выводит на экран значения всего массива
@@ -24,6 +25,11 @@ def f(x):
 
 
 def monte_krist_graph(a, b, maxf, max_steps=10000):
+# f = lambda x: x**2
+
+
+def monte_krist_graph(a, b, maxf,f, max_steps=10000):
+
     """Вычисляет интеграл методом Монте-Карло. Графический алгорим: основан на вероятности попадания случайного чила в область под графиком
 
     Args:
@@ -41,7 +47,6 @@ def monte_krist_graph(a, b, maxf, max_steps=10000):
         yr = maxf * rnd.random()
         if f(xr) > yr: nsucces += 1
     return area * nsucces / max_steps
-
 
 def monte_krist_analyse(a, b, max_steps=10):
     """Вычисляет интеграл методом Монте-Карло. Аналитический алгорим: основан на свойстве определенного интеграла 
@@ -122,3 +127,30 @@ b = monte_krist_graph(0, 2, 10)
 c = trap(0, 2)
 d = kotes(0, 2)
 print(a, b, c, d)
+=======
+# def monte_krist_analytical(a, b, max_steps=10):
+,
+if __name__ == '__main__':
+    x0 = -9
+    x1 = 15
+    print('         Integrals %s to %s:    ' % (x0,x1))
+    print('    Monte-Karlo, analytical:')
+    a = monte_krist_analytical(x0, x1, max_steps=10000)
+    print(a)
+    print()
+
+    print('    Monte-Karlo, graphical:')
+    b = monte_krist_graph(x0, x1, 100)
+    print(b)
+    print()
+
+    print('    Trapezoids: ')
+    c = trap(x0, x1)
+    print(c)
+    print()
+
+    print('    Kotes: ')
+    d = kotes(x0, x1)
+    print(d)
+    print()
+    print()

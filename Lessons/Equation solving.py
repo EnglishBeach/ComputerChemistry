@@ -138,6 +138,8 @@ def print2D(f):
     Выводит на экран значения всего массива
     """
 
+
+
     for y in range(len(f)):
         output = ''
         for x in range(len(f[0])):
@@ -148,7 +150,42 @@ def print2D(f):
                 output += ' {0: >8.2f}'.format(f[y][x])
         print(output)
 
+x0 = -9
+x1 = 15
+print('         Solving equation x**2 + 2 * x - 3 from %s to %s:    ' % (x0,x1))
+print('    Dyhotomy:')
+a = dyhotomy(x0, x1)
+print(a)
+print()
+
+print('    Newton:')
+b = newton(x0)
+print(b)
+print()
+
+print('    Monte-Karlo: ')
+print('{0: >8} {1: >8}'.format('x', 'y'))
+c = monte_kristo(x0, x1, max_steps=1000,quality=0.2)
+print2D(c)
+print()
+
+
+    for y in range(len(f)):
+        output = ''
+        for x in range(len(f[0])):
+            if type(f[y][x]) == str:
+                output += ' |{0: <14}|'.format(f[y][x])
+
+
+            else:
+                output += ' {0: >8.2f}'.format(f[y][x])
+        print(output)
+
 
 a = monte_kristo(-10, 10, max_steps=100)
 print('{0: >8} {1: >8}'.format('x', 'y'))
 print2D(a)
+
+
+
+
