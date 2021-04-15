@@ -8,6 +8,7 @@ Kb = 8.6165E-5
 def fC(t):
     T = lambda t: T0 + (T1 - T0) * (1 - mt.exp(-t / q))
     k = lambda t: (-E / Kb - T(t))
+import numpy as np
     c = lambda t: c0 * mt.exp(-Kb * t)
     return c(t)
 
