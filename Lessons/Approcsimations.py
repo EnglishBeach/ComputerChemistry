@@ -1,4 +1,4 @@
-def polinomial ():
-    for x in range():
-        for y in range():
+# def polinomial ():
+#     for x in range():
+#         for y in range():
             

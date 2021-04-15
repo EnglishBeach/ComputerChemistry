@@ -32,11 +32,11 @@ def eiler(F, x0, y0, steps, dx=0.1):
     return [X, Y]
 
 def runge(F, x0, y0, steps, dx=0.1,type = 1):
-    def k1(F,x,y,dx):
-        return dx*F(x,y)
+    def k1(f,x,y,dx):
+        return dx*f(x,y)
 
-    def k2(F,x,y,dx):
-        return dx*F(x+dx/2,y+k1(F,x,y,dx)/2)
+    def k2(f,x,y,dx):
+        return dx*f(x+dx/2,y+k1(f,x,y,dx)/2)
 
     def k3(F,x,y,dx):
         return dx*F(x+dx,y+2*k2(F,x,y,dx) - k1(F,x,y,dx))

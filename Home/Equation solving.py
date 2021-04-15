@@ -8,7 +8,7 @@ def f(x):
     return x**2 + 2 * x - 3
 
 
-def dyhotomy(a, b, quality=0.01, max_steps=1000):
+def dyhotomy(f, a, b, quality=0.01, max_steps=1000):
     """Нахождение корня уравнения методом Дихотомии
 
     Args:
@@ -40,7 +40,7 @@ def dyhotomy(a, b, quality=0.01, max_steps=1000):
     return mid
 
 
-def simple_iteration(root, quality=0.0004, max_steps=1000):
+def simple_iteration(f, root, quality=0.0004, max_steps=1000):
     """Вычисление корня методом простых итерраций. Очень плохой почти никогда не сходится, 
     а чтобы по-хорошему го использовать нужно знать вид самой функции и алгебраически ее преобразовать, что 
     невозможно 
@@ -66,7 +66,7 @@ def simple_iteration(root, quality=0.0004, max_steps=1000):
         return bad_root
 
 
-def newton(x, quality=0.001, max_steps=20):
+def newton(f, x, quality=0.001, max_steps=20):
     """Решение уравнение методом Ньютона - Рафсона
 
     Args:
@@ -92,7 +92,7 @@ def newton(x, quality=0.001, max_steps=20):
     return x1
 
 
-def monte_kristo(a, b, quality=1, max_steps=100):
+def monte_kristo(f, a, b, quality=1, max_steps=100):
     """Решение уравнения методом Монте-Карло. 
     Args:
         a (float): Левая граница
