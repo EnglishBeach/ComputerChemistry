@@ -95,27 +95,27 @@ def kotes(f,a, b, n=3):
     return n * dx * suma / N
 
 if __name__ == '__main__':
-    f = lambda x: x ** 2
+    def f(x):
+        return x ** 2
     x0 = -9
     x1 = 15
     print('         Integrals %s to %s:    ' % (x0,x1))
     print('    Monte-Karlo, analytical:')
-    a = monte_krist_analytical(x0, x1, max_steps=10000)
+    a = monte_krist_analytical(f,x0, x1, max_steps=10000)
     print(a)
     print()
-
     print('    Monte-Karlo, graphical:')
-    b = monte_krist_graph(x0, x1, 100)
+    b = monte_krist_graph(f,x0, x1, 100)
     print(b)
     print()
 
     print('    Trapezoids: ')
-    c = trap(x0, x1)
+    c = trap(f,x0, x1)
     print(c)
     print()
 
     print('    Kotes: ')
-    d = kotes(x0, x1)
+    d = kotes(f,x0, x1)
     print(d)
     print()
     print()
