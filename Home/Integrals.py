@@ -1,7 +1,7 @@
 import random as rnd
 
 
-def monte_krist_graph(f, a, b, maxf, max_steps=10000):
+def monte_karlo_graph(f, a, b, maxf, max_steps=10000):
     """Вычисляет интеграл методом Монте-Карло. Графический алгорим: основан на вероятности попадания случайного чила в область под графиком
 
     Args:
@@ -21,7 +21,7 @@ def monte_krist_graph(f, a, b, maxf, max_steps=10000):
     return area * nsucces / max_steps
 
 
-def monte_krist_analytical(f,a, b, max_steps=10):
+def monte_karlo_analytical(f,a, b, max_steps=10):
     """Вычисляет интеграл методом Монте-Карло. Аналитический алгорим: основан на свойстве определенного интеграла
         I = (b-a)f(e),
         е - некоторое число на промежутке [a;b], f(e) - среднее значение f(x)
@@ -101,11 +101,11 @@ if __name__ == '__main__':
     x1 = 15
     print('         Integrals %s to %s:    ' % (x0,x1))
     print('    Monte-Karlo, analytical:')
-    a = monte_krist_analytical(f,x0, x1, max_steps=10000)
+    a = monte_karlo_analytical(f,x0, x1, max_steps=10000)
     print(a)
     print()
     print('    Monte-Karlo, graphical:')
-    b = monte_krist_graph(f,x0, x1, 100)
+    b = monte_karlo_graph(f,x0, x1, 100)
     print(b)
     print()
 
