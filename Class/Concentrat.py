@@ -1,24 +1,17 @@
 import math as mt
-import pandas as pnd
+import pandas as pd
 import matplotlib.pyplot as plt
 
 Kb = 8.6165E-5
-def fC (t):
-    T = lambda t: T0 + (Tk-T0)*(1-exp(-t/q))
-    k = lambda t: (-E/Kb-T(t))
-    c= lambda t: c0*exo(-k*t)
-    return c
 
-# def simpa (a,b,n):
-#     dx = (b-a)/n
-#     x= lambda i: a+dx*i
-#     summ = 0.0
-#     for i in range( int((n/2)//1)):
-#         s = f(x (2*i) )+4*f(x (2*i+1) )+ f( x(2*i) )
-#         summ += s
-#     return summ*dx/3.0
 
-def kotes(f,llim, rlim, n=3):
+def fC(t):
+    T = lambda t: T0 + (T1 - T0) * (1 - mt.exp(-t / q))
+    k = lambda t: (-E / Kb - T(t))
+    c = lambda t: c0 * mt.exp(-Kb * t)
+    return c(t)
+
+def kotes(f,a, b, n=3):
     """Вычисляет интеграл методом Котеса
 
     Args:
@@ -28,7 +21,7 @@ def kotes(f,llim, rlim, n=3):
     Returns:
         (float): Значение интеграла
     """
-    dx = (rlim - llim) / n
+    dx = (b - a) / n
     s = 0
     A = []
     for i in range(8):
@@ -51,61 +44,65 @@ def kotes(f,llim, rlim, n=3):
         N = 8
     suma = 0
     for i in range(8):
-        suma += A[i] * f(llim + dx * i)
+        suma += A[i] * f(a + dx * i)
 
     return n * dx * suma / N
 
-def restrict_of_integral(f,left_gen_lim,right_gen_lim,points):
-    dx = (right_gen_lim-left_gen_lim)/points
-    def infunc (*args, **kwargs):
-        i = 0
-        s0=0
-        s=0
-        for i in range(points):
-            s+=f(left_limit=left_gen_lim+dx*i,right_limit = left_gen_lim+dx*(i+1) , *args,**kwargs)
-            i+=1       
-        return [S,I]
-    return infunc
-
 # Входные данные
-left_limit=0
-right_limit=158
-stop = 0
-T0 = 300
-Tk= 900
 E = 1
 q = 1
-steps= 10
-quality
+c0 = 0.0
+k= 1
 
-dt = (right_limit-left_limit)/steps
-j=1
-    # out =  simpa (left_limit,right_limit,n)
-    # n1 = n*2
+time_end = 100
 
+Tstart = 300
+Tend = 900
 
-while temp< max-temp:
-    temp = T0
-    out0=0
-    C=[]
-    T=[]
-    i=0
+numberT = 6
+dT = (Tend - Tstart) / numberT
+
+quality = 0.1
+
+C = []
+T = []
+C.append('{0: > 5.2} M'.format(c0))
+T.append('{0: > 5.1f} K'.format(Tstart))
+for nT in range(numberT):
+    T0 = Tstart + dT * nT
+    T1 = Tstart + dT * (nT + 1)
+    # Цикл сходимости
+    i = 0
     while True:
-        i+=1
-        out =  restrict_of_integral( kotes(fC,n=2), left_gen_lim=left_limit, right_gen_lim = right_limit, points=4*2**steps)
-        if abs(out-out)/out<quality:
-            break
-        out0 = out
-    C.append('{0: > 5.2} M' .format(out))
-    T.append('{0: > 5.2} K' .format(temp))
+        number_time = 4 * 2**i
 
+        dtime = time_end / number_time
 
+        # Цикл разбиений
+        s0 = 0
+        s = 0
+        for ntime in range(number_time):
+            s += kotes(f = fC,
+                       n=2,
+                       a=dtime * ntime,
+                       b=dtime * (ntime + 1))
+        
+        try:
+            koef = abs(s - s0) / s0 
+        except ZeroDivisionError:
+            koef = 0
+        if koef < quality: break
 
+        i += 1
+
+        s0 = s
+    C.append('{0: > 5.2} M'.format(s))
+    T.append('{0: > 5.1f} K'.format(T1))
 
 f = pd.DataFrame({'Concentrations': C, 'Temperatures': T})
-plt.figure(figsize=(16, 10), dpi=80, facecolor='w', edgecolor='k')
-plt.plot(X, Y)
-plt.grid(True)
+# plt.figure(figsize=(16, 10), dpi=80, facecolor='w', edgecolor='k')
+# plt.plot(T, C)
+# plt.grid(True)
 plt.show()
 
 print(f)
