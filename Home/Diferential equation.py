@@ -49,7 +49,7 @@ def runge(F, x0, y0, steps, dx=0.1,type = 1):
     elif type == 2:
         A[0] = 1/2*F
     elif type == 3:
-        # def k
+        def k
 
     ynext = y + dx * AF(x, y)
     x += dx
