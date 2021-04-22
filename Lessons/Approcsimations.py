@@ -19,14 +19,11 @@ def summXY(degree, X, Y):
     return s
 
 
-X = np.arange(0, 1.1, 0.1)
-Ypr = np.array([
-    0.53284, 0.632592, 0.951817, 1.071767, 1.366545, 1.455831, 1.65461,
-    1.895859, 2.146855, 2.207135, 2.57399
-])
+X = np.array([1,2,3,4,5,6,7,8,9,10])
+Ypr = np.array([2,3,1,4,5,7,6,10,11,13])
 length = len(X)
 
-extend = 2
+extend = 4
 
 INPUT = np.vstack((X, Ypr))
 INPUT = INPUT.transpose()
@@ -58,39 +55,33 @@ print('     Правая часть:')
 print(pd.DataFrame(B))
 
 # Решение методом крамера
-A = []
+A=[]
 for i in range(extend):
     Mi = M.copy()
-    Mi[:, i] = B
+    Mi[:,i] = B
     # print('M %s'% i)
     # print(pd.DataFrame(Mi))
     detMi = lin.det(Mi)
-    ai = detMi / detM
+    ai = detMi/detM
     A.append(ai)
-A = np.array(A)
+A =np.array(A)
 print('     Решения:')
 print(pd.DataFrame(A))
 
-M2 = lin.solve(M, B)
+M2 = lin.solve(M,B)
 print('     Решения Numpy:')
 print(pd.DataFrame(M2))
 
-Yteor = []
-Xteor = []
-nstep = 20
-Xmin = np.min(X)
-Xmax = np.max(X)
-step = (Xmax- Xmin)/nstep
-
-for i in np.arange(Xmin,Xmax,step):
-    s = 0
-    Xteor.append(i)
+Y=[]
+for i in X:
+    s=0
     for n in range(len(A)):
-        s += i**n * A[n]
-    Yteor.append(s)
+        s+=i**n*A[n]
+    Y.append(s)
+
 
 plt.figure(figsize=(16, 10), dpi=80, facecolor='w', edgecolor='k')
-plt.scatter(X, Ypr, color='Black')
-plt.plot(Xteor, Yteor)
+plt.scatter(X, Ypr,color='Black')
+plt.plot(X, Y)
 plt.grid(True)
 plt.show()
