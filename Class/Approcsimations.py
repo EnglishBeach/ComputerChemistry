@@ -3,6 +3,7 @@ import random as rnd
 import matplotlib.pyplot as plt
 import pandas as pd
 import numpy.linalg as lin
+import pylab
 
 
 def summ(degree, X):
@@ -30,7 +31,7 @@ extend = 2
 
 INPUT = np.vstack((X, Ypr))
 INPUT = INPUT.transpose()
-# Вввод
+# Ввод
 print('     Ввод:')
 INPUT = pd.DataFrame(INPUT, columns=['X', 'Y'])
 print(INPUT)
@@ -80,17 +81,47 @@ Xteor = []
 nstep = 20
 Xmin = np.min(X)
 Xmax = np.max(X)
-step = (Xmax- Xmin)/nstep
+step = (Xmax - Xmin) / nstep
 
-for i in np.arange(Xmin,Xmax,step):
+# Построение линии
+for i in np.arange(Xmin, Xmax + step, step):
     s = 0
     Xteor.append(i)
     for n in range(len(A)):
         s += i**n * A[n]
     Yteor.append(s)
+pylab.xkcd()
+plt.figure(figsize=(10, 10), dpi=80, facecolor='w', edgecolor='k')
+plt.title('Аппроксимация')
 
-plt.figure(figsize=(16, 10), dpi=80, facecolor='w', edgecolor='k')
 plt.scatter(X, Ypr, color='Black')
-plt.plot(Xteor, Yteor)
-plt.grid(True)
+
+plt.plot(Xteor, Yteor, "b-", label="$f(x)$")
+
+plt.grid(False)
+plt.xlabel('X')
+plt.ylabel('Y')
+plt.xticks([i for i in np.arange(0, 1.1, 0.2)],
+           ['{0: >1.1f} ед'.format(i) for i in np.arange(0, 1.2, 0.2)])
+ax = plt.gca()
+
+ax.spines['right'].set_color('none')
+ax.spines['top'].set_color('none')
+
+ax.xaxis.set_ticks_position('bottom')
+ax.spines['bottom'].set_position(('data', 0.5))
+
+ax.yaxis.set_ticks_position('left')
+ax.spines['left'].set_color('none')
+# ax.spines['left'].set_position(('data',0))
+
+plt.xlim(0, 1.1)
+
+# plt.annotate(r'$x=\frac{-b\pm\sqrt{b^2-4ac}}{2a}$',
+#              xy=[0.5, 1],
+#              xycoords='data',
+#              xytext=[60, 30],
+#              fontsize=20,
+#              textcoords='offset points',
+#              arrowprops=dict(arrowstyle="->", connectionstyle="arc3,rad=.9"))
 plt.show()
