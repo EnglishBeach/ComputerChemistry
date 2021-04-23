@@ -117,11 +117,19 @@ ax.spines['left'].set_color('none')
 
 plt.xlim(0, 1.1)
 
-# plt.annotate(r'$x=\frac{-b\pm\sqrt{b^2-4ac}}{2a}$',
-#              xy=[0.5, 1],
-#              xycoords='data',
-#              xytext=[60, 30],
-#              fontsize=20,
-#              textcoords='offset points',
-#              arrowprops=dict(arrowstyle="->", connectionstyle="arc3,rad=.9"))
+plt.annotate('Аппроксимационная \n кривая',
+             xy=[0.53, 1.577],
+             xycoords='data',
+             xytext=[-260, 30],
+             fontsize=20,
+             textcoords='offset points',
+             arrowprops=dict(arrowstyle="->", connectionstyle="arc3,rad=0.3"))
+plt.annotate('Экспериментальное \n значение',
+             xy=[0.6, 1.64],
+             xycoords='data',
+             xytext=[60, 30],
+             fontsize=20,
+             textcoords='offset points',
+             arrowprops=dict(arrowstyle="->", connectionstyle="arc3,rad=-0.9"))
+plt.show()
 plt.show()
