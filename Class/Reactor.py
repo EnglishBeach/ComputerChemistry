@@ -3,7 +3,7 @@ import pandas as pd
 import random as rnd
 from math import *
 
-xmin = 0
+xmin = 1
 xmax = 10
 ymin = 0
 ymax =10
