@@ -8,13 +8,13 @@ def f(x, y):
 def eiler(F, x0, y0, steps, dx=0.1):
     """ Решает методом Эйлера уравнения типа:
     dy/dx = F(x,y)
-    
+
     Args:
         F (function): Функиця от ч х, у.
         x0,y0 (int): Начальные значения х,у.
         steps (int): Количество шагов.
         dx (int, optional): Шаг х.
- 
+
     """
     X = [x0]
     Y = [y0]
