@@ -132,4 +132,3 @@ plt.annotate('Экспериментальное \n значение',
              textcoords='offset points',
              arrowprops=dict(arrowstyle="->", connectionstyle="arc3,rad=-0.9"))
 plt.show()
-plt.show()
