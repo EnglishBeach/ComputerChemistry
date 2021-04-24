@@ -1,12 +1,15 @@
 import random as rnd
 import math as m
 import pandas as pd
+import matplotlib.pyplot as plt
 
+# Начальные параметры
 XMIN = 1
 XMAX = 10
 YMIN = 0
 YMAX = 10
-K = 1
+# Лямбда
+H = 1
 
 # Задание вероятнойстей ядерной реакции
 #   [0;rlim1] - ничего не происходит
@@ -15,65 +18,61 @@ K = 1
 RLIM1 = 0.3
 RLIM2 = 0.7
 
+#N - начальное число частиц
+N = 20
+TIME = 600
 
-def creating_reactor(nnumber: int):
-    A = pd.DataFrame({'X0': [], 'Y0': [], 'X1': [], 'Y1': []})
+#Контроль стержней
+NTARGET = 10
+K = 1
+
+def creating_reactor(nnumber: int = 5):
+    A = pd.DataFrame({'X': [], 'Y': []})
     for i in range(nnumber):
         x = XMIN + (XMAX - XMIN) * rnd.random()
         y = YMIN + (YMAX - YMIN) * rnd.random()
-        A = A.append({'X0': x, 'Y0': y, 'X1': 0, 'Y1': 0}, ignore_index=True)
+        A = A.append({'X': x, 'Y': y}, ignore_index=True)
     return A
-
-
-def insert_row(row_number, df, row_value):
-    copy_df = df.copy()
-
-    start_upper = 0
-    end_upper = row_number
-    start_lower = row_number
-    end_lower = df.shape[0]
-    upper_half = [*range(start_upper, end_upper, 1)]
-
-    lower_half = [*range(start_lower, end_lower, 1)]
-    lower_half = [x.__add__(1) for x in lower_half]
-    index_ = upper_half + lower_half
-
-    copy_df.index = index_
-    copy_df.loc[row_number] = row_value
-    copy_df = copy_df.sort_index()
-    return copy_df
-
-
-# def active_kernel(n):
-#     r = RlIM1 + (RLIM2 - RlIM1) * (1 + K * (n - nv) / nv)
-#     return r
 
 
 def main():
     """Основной код программы
     """
+    # Базовые функции контроля
+    l = lambda h, r: -h * m.log(1 - r)
+    control = lambda n: (RLIM2- RLIM1)*(1+K*(n-NTARGET)/NTARGET)
 
-    # l = lambda h, r: -h * m.log(1 - r)
-    l = 1
-    nt = 0
+    control_RLIM2 = RLIM2
     # Создание реактора
-    Reactor = creating_reactor(nnumber=20)
+    Reactor = creating_reactor(N)
 
     # Запуск деления
     tick = 0
-    total_n = pd.Series()
-    while tick <= 3 & True:  #Количество тиков, каждый тик - 1 дейтсвие всех нейтронов
+    Rlen = N
+    total_n = [Rlen]
 
-       for nt in Reactor.index:  #Перебор всех нейтронов
-            x0 = Reactor.loc[nt].X0
-            y0 = Reactor.loc[nt].Y0
+    #Количество тиков, каждый тик - 1 дейтсвие всех нейтронов
+    while tick < TIME and Rlen != 0 and len(
+            Reactor.index) < 1000:
+
+        # Перебор с конца
+        nt = Rlen - 1
+
+        # Проверка на включение и выключение системы контроля
+        if Rlen< NTARGET: control_RLIM2 = control(Rlen)
+        elif Rlen> NTARGET*2:control_RLIM2 = RLIM2
+
+        #Перебор всех нейтронов
+        while nt >= 0:
+
+            x0 = Reactor.loc[nt].X
+            y0 = Reactor.loc[nt].Y
 
             # Случайное направление движения
-            fi = 0 + 2 * m.pi() * rnd.random()
-            x1 = x0 + l * m.cos(fi)
-            y1 = y0 + l * m.sin(fi)
-            Reactor.loc[nt].X1 = x1
-            Reactor.loc[nt].Y1 = y1
+            fi = 0 + 2 * m.pi * rnd.random()
+            r = rnd.random()
+            x1 = x0 + l(H, r) * m.cos(fi)
+            y1 = y0 + l(H, r) * m.sin(fi)
 
             # Выбираем случайный исход взаимодействия
             result = rnd.random()
@@ -82,21 +81,27 @@ def main():
                 Reactor = Reactor.drop(index=nt)
 
             elif result <= RLIM1:
-                Reactor.loc[nt].X0 = x1
-                Reactor.loc[nt].Y0 = y1
+                Reactor.loc[nt].X = x1
+                Reactor.loc[nt].Y = y1
 
-            elif RLIM1 < result <= RLIM2:
+            elif RLIM1 < result <= control_RLIM2:
                 Reactor = Reactor.drop(index=nt)
 
-            elif RLIM2 < result:
-                Reactor.loc[nt].X0 = x1
-                Reactor.loc[nt].Y0 = y1
-                Reactor = insert_row(nt + 1, Reactor, [x1, y1, x1, y1])
+            elif control_RLIM2 < result:
+                Reactor.loc[nt].X = x1
+                Reactor.loc[nt].Y = y1
+                Reactor = Reactor.append({'X': x1, 'Y': y1}, ignore_index=True)
+                nt -= 1
+            nt -= 1
 
-        Reactor = Reactor.reset_index()
-        total_n = total_n.append(pd.Series(nt), ignore_index=True)
+        Rlen = len(Reactor.index)
+        Reactor.reset_index(drop=True, inplace=True)
+        total_n.append(Rlen)
         tick += 1
-    print(total_n)
+
+    plt.figure(figsize=(10, 10), dpi=80, facecolor='w', edgecolor='k')
+    plt.plot(total_n, label="$f(x)$")
+    plt.show()
 
 
 main()
