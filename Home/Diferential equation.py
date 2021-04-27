@@ -2,8 +2,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import math as mt
 
-f=  lambda x,y:  x
-X0 = 1
+X0 = 0
 Y0 = 0
 STEPS = 10
 DX = 0.2
@@ -80,7 +79,8 @@ def runge(f, x, y, steps, dx=0.1,type = 1):
             Ylist.append(y)    
         return [Xlist,Ylist]        
         
-def main(f):
+def main_one_equation():
+    f=  lambda x,y:  x
     # Решение уравнения dy/dx = F(x,y)
 
     answer = runge(f, x=X0, y=Y0, steps=STEPS, dx=-DX)
@@ -98,4 +98,18 @@ def main(f):
     plt.plot(X, Y)
     plt.grid(True)
     plt.show()
-main(f)
+
+def main_system_equation(f):
+    def numf(s):
+        numf = lambda x: x**s
+        return numf
+    number_eq = 3
+    systemf = [ numf(i) for i in range(number_eq)]
+
+    for i in range(number_eq):
+        y0 = eiler(systemf[i], x=X0, y=Y0, steps=STEPS, dx=DX)
+        
+
+
+
+main_one_equation()
