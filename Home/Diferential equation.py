@@ -1,11 +1,14 @@
 import matplotlib.pyplot as plt
 import pandas as pd
+import math as mt
 
-def f(x, y):
-    return x
+f=  lambda x,y:  mt.sin(x)
+X0 = 1
+Y0 = 0
+STEPS = 1000
+DX = 0.2
 
-
-def eiler(F, x0, y0, steps, dx=0.1):
+def eiler(f, x, y, steps, dx=0.1):
     """ Решает методом Эйлера уравнения типа:
     dy/dx = F(x,y)
 
@@ -16,39 +19,47 @@ def eiler(F, x0, y0, steps, dx=0.1):
         dx (int, optional): Шаг х.
 
     """
-    X = [x0]
-    Y = [y0]
-    x = x0
-    y = y0
+    Xlist = [x]
+    Ylist = [y]
 
     for i in range(steps):
-        ynext = y + dx * F(x, y)
+        y = y + dx * f(x, y)
         x += dx
-        Y.append(ynext)
-        X.append(x)
-        y = ynext
+        Xlist.append(x)
+        Ylist.append(y)
 
         # print('X: {0: >5.2f} Y: {1: >5.2f}'.format(x, y))
-    return [X, Y]
+    return [Xlist, Ylist]
 
-def runge(F, x0, y0, steps, dx=0.1,type = 1):
-    def k1(f,x,y,dx):
-        return dx*f(x,y)
+def runge(f, x, y, steps, dx=0.1,type = 1):
 
-    def k2(f,x,y,dx):
-        return dx*f(x+dx/2,y+k1(f,x,y,dx)/2)
-
-    def k3(F,x,y,dx):
-        return dx*F(x+dx,y+2*k2(F,x,y,dx) - k1(F,x,y,dx))
-
-    def k4(F,x,y,dx):
-        return dx*F(x+dx,)
+    k1= dx*f(x,y)
+    k2= dx*f(x+dx/2,y+k1/2)
+    k3 = dx*f(x+dx,y+2*k2 - k1)
+    k4= dx*f(x+dx,y+k3)
 
     if type == 1:
-        return eiler(F, x0, y0, steps, dx=0.1)
+        return eiler(x, x, y, steps, dx=0.1)
     elif type == 2:
-        A[0] = 1/2*F
+        y1 =y+ dx*f(k1+4*k2+k3)
+        return f(k1+4*k2+k3)
     elif type == 3:
+        k1= dx*f(x,y)
+        k2= dx*f(x+dx/2,y+k1/2)
+        k3 = dx*f(x+dx,y+2*k2 - k1)
+
+        y1 =y+ dx*f(k1+4*k2+k3)
+        return f(k1+4*k2+k3)
+    elif type == 4:
+        k1= dx*f(x,y)
+        k2= dx*f(x+dx/2,y+k1/2)
+        k3 = dx*f(x+dx,y+k2/2)
+        k4= dx*f(x+dx,y+k3)
+
+    for i in range(steps):
+        
+
+        y1 =y+ dx*(k1+2*k2+2*k3+k4)/6
 
     ynext = y + dx * AF(x, y)
     x += dx
@@ -58,23 +69,22 @@ def runge(F, x0, y0, steps, dx=0.1,type = 1):
 
 
 
-# Решение уравнения dy/dx = F(x,y)
-x0 = 0
-y0 = 1
-answer = eiler(f, x0=x0, y0=y0, steps=10, dx=-1)
-X = answer[0]
-Y = answer[1]
-X.reverse()
-Y.reverse()
+def main(f):
+    # Решение уравнения dy/dx = F(x,y)
 
-answer = eiler(f, x0=x0, y0=y0, steps=10, dx=1)
-X.extend(answer[0])
-Y.extend(answer[1])
+    answer = eiler(f, x=X0, y=Y0, steps=STEPS, dx=-DX)
+    X = answer[0]
+    Y = answer[1]
+    X.reverse()
+    Y.reverse()
 
-f = pd.DataFrame({'X': X, 'Y': Y})
-plt.figure(figsize=(16, 10), dpi=80, facecolor='w', edgecolor='k')
-plt.plot(X, Y)
-plt.grid(True)
-plt.show()
+    answer = eiler(f, x=X0, y=Y0, steps=STEPS, dx=DX)
+    X.extend(answer[0])
+    Y.extend(answer[1])
 
-print(f)
+    data = pd.DataFrame({'X': X, 'Y': Y})
+    plt.figure(figsize=(16, 10), dpi=80, facecolor='w', edgecolor='k')
+    plt.plot(X, Y)
+    plt.grid(True)
+    plt.show()
+main(f)
