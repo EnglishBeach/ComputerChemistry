@@ -103,5 +103,4 @@ def main():
     plt.plot(total_n, label="$f(x)$")
     plt.show()
 
-
 main()
