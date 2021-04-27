@@ -27,7 +27,7 @@ def create_gauss(f):
     return H
 
 
-def main(f):
+def optimise_Newton(f):
     x0 = X0
     y0 = Y0
 
@@ -51,5 +51,9 @@ def main(f):
     print('Steps: %s'%i)
     plot3d(f, (x, XDIAP[0], XDIAP[1]), (y, YDIAP[0], YDIAP[1]))
 
+# def optimise_Monte_karlo(f):
 
-main(f)
+# def optimase
+
+
+optimise_Newton(f)
