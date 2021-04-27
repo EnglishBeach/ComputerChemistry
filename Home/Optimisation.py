@@ -46,7 +46,7 @@ def optimise_FastDown(f):
         f (sympy.function): Функция
     """
 
-    feval = sym.lambdify([x, y], f)
+    # f.evalf( = sym.lambdify([x, y], f)
 
     # Начальная точка
     r0 = mat.Matrix((X0, Y0))
@@ -65,16 +65,13 @@ def optimise_FastDown(f):
 
         r1 = r0 - STEP * g.subs({x: r0[0], y: r0[1]})
         #
-        if abs(
-            (feval(r1[0], r1[1]) - feval(r0[0], r0[1]))
-            ) < QUALITY or i > MAXI:
-            break
-
+        if abs(f.evalf(subs={x: r1[0], y: r1[1]}) - f.evalf(subs= {x: r0[0],y: r0[1]}) ) < QUALITY or i > MAXI: break
         points = points.row_insert(99999, r1.transpose())
         r0 = r1
 
     sym.pprint(points)
     print('Steps: %s' % i)
+    print('Value: %s'% f.evalf(subs={x: r1[0], y: r1[1]}))
     plot3d(f, (x, XDIAP[0], XDIAP[1]), (y, YDIAP[0], YDIAP[1]))
 
 
