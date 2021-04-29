@@ -77,7 +77,7 @@ def main():
 
             # Выбираем случайный исход взаимодействия
             result = rnd.random()
-
+            # Исправить на хранение изменений прямо в ячейке, без создания переменных x,y...
             if x1 > XMAX or x1 < XMIN or y1 < YMIN or y1 > YMAX:
                 Reactor = Reactor.drop(index=nt)
 
