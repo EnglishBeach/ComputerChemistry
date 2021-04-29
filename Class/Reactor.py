@@ -26,6 +26,7 @@ TIME = 600
 NTARGET = 10
 K = 1
 
+
 def creating_reactor(nnumber: int = 5):
     A = pd.DataFrame({'X': [], 'Y': []})
     for i in range(nnumber):
@@ -91,7 +92,6 @@ def main():
                 Reactor.loc[nt].X = x1
                 Reactor.loc[nt].Y = y1
                 Reactor = Reactor.append({'X': x1, 'Y': y1}, ignore_index=True)
-                nt -= 1
             nt -= 1
 
         Rlen = len(Reactor.index)

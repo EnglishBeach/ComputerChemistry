@@ -32,10 +32,10 @@ def eiler(f, x, y, steps, dx=0.1):
 
 def runge(f, x, y, steps, dx=0.1,type = 1):
 
-    k1= dx*f(x,y)
-    k2= dx*f(x+dx/2,y+k1/2)
-    k3 = dx*f(x+dx,y+2*k2 - k1)
-    k4= dx*f(x+dx,y+k3)
+    # k1= dx*f(x,y)
+    # k2= dx*f(x+dx/2,y+k1/2)
+    # k3 = dx*f(x+dx,y+2*k2 - k1)
+    # k4= dx*f(x+dx,y+k3)
 
     Xlist = [x]
     Ylist = [y]
