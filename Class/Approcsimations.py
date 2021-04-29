@@ -23,13 +23,13 @@ def summXY(degree, X, Y):
 def main():
     X = np.arange(0, 1.1, 0.1)
     Ypr = np.array([
-        0.53284, 0.632592, 0.951817, 1.071767, 1.366545, 1.455831, 1.65461,
-        1.895859, 2.146855, 2.207135, 2.57399
+        0.53284, 0.92592, 0.951817, 1.071767, 1.366545, 1.455831, 1.65461,
+        1.87859, 2.146855, 6.207135, 7.57399
     ])
     global length
     length = len(X)
 
-    extend = 2
+    extend = 5
 
     INPUT = np.vstack((X, Ypr))
     INPUT = INPUT.transpose()
@@ -92,7 +92,7 @@ def main():
         for n in range(len(A)):
             s += i**n * A[n]
         Yteor.append(s)
-    pylab.xkcd()
+    # pylab.xkcd()
     plt.figure(figsize=(10, 10), dpi=80, facecolor='w', edgecolor='k')
     plt.title('Аппроксимация')
 
