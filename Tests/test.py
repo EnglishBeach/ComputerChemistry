@@ -1,8 +1,13 @@
-def add(a: int, b: int) -> int:
-    return a + b
+def f(inarg,outarg):
+    return inarg**outarg
 
+def outf(f,k,*args):
+    k +=1
+    s = f(outarg = k,*args)
+    return s
 
-
-out = add(5, 4)
-print(out)
-print(type(out))
+def main():
+    inarg= 2
+    s = outf(f,5,inarg)
+    print (s)
+main()

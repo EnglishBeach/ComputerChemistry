@@ -2,16 +2,31 @@ import math as mt
 import pandas as pd
 import matplotlib.pyplot as plt
 
-Kb = 8.6165E-5
+# Константы
+KB = 8.6165E-5
+E = 1
+VALUME_CHANGE_T = 1
+C0 = 1
+K = 1
+
+# Входные данные
+TSTART = 300
+TEND = 400
+NUMBER_T = 10
+QUALITY = 0.1
+
+TIME = 100
+MAXTIMEPOINTS = 200
 
 
-def fC(t):
-    T = lambda t: T0 + (T1 - T0) * (1 - mt.exp(-t / q))
-    k = lambda t: (-E / Kb - T(t))
-    c = lambda t: c0 * mt.exp(-Kb * t)
+def f(t, T0, T1, c0):
+    temp = lambda t: T0 + (T1 - T0) * (1 - mt.exp(-t / VALUME_CHANGE_T))
+    k = lambda t: K*mt.exp(-E / (KB * temp(t)))
+    c = lambda t: c0 * mt.exp(-k(t) * t)
     return c(t)
 
-def kotes(f,a, b, n=3):
+
+def kotes(f, a, b, n=3, **kwargs):
     """Вычисляет интеграл методом Котеса
 
     Args:
@@ -22,7 +37,6 @@ def kotes(f,a, b, n=3):
         (float): Значение интеграла
     """
     dx = (b - a) / n
-    s = 0
     A = []
     for i in range(8):
         A.append(0)
@@ -44,65 +58,66 @@ def kotes(f,a, b, n=3):
         N = 8
     suma = 0
     for i in range(8):
-        suma += A[i] * f(a + dx * i)
-
+        suma += A[i] * f(t=a + dx * i, **kwargs)
     return n * dx * suma / N
 
-# Входные данные
-E = 1
-q = 1
-c0 = 0.0
-k= 1
 
-time_end = 100
-
-Tstart = 300
-Tend = 900
-
-numberT = 6
-dT = (Tend - Tstart) / numberT
-
-quality = 0.1
-
-C = []
-T = []
-C.append('{0: > 5.2} M'.format(c0))
-T.append('{0: > 5.1f} K'.format(Tstart))
-for nT in range(numberT):
-    T0 = Tstart + dT * nT
-    T1 = Tstart + dT * (nT + 1)
-    # Цикл сходимости
+def kotes_quality(f, llim, rlim, quality=0.1, n=3, **kwargs):
+    s0 = kotes(f, a=llim, b=rlim, n=n, **kwargs)
     i = 0
     while True:
-        number_time = 4 * 2**i
-
-        dtime = time_end / number_time
-
-        # Цикл разбиений
-        s0 = 0
+        npoints = 4 * 2**i
+        step = (llim - rlim) / npoints
         s = 0
-        for ntime in range(number_time):
-            s += kotes(f = fC,
-                       n=2,
-                       a=dtime * ntime,
-                       b=dtime * (ntime + 1))
-        
-        try:
-            koef = abs(s - s0) / s0 
-        except ZeroDivisionError:
-            koef = 0
-        if koef < quality: break
-
+        for point in range(npoints):
+            s += kotes(f,
+                       a=llim + step * point,
+                       b=llim + step * (point + 1),
+                       n=n,
+                       **kwargs)
+        if abs((s - s0) / s0) < quality and npoints > MAXTIMEPOINTS: return s
         i += 1
 
-        s0 = s
-    C.append('{0: > 5.2} M'.format(s))
-    T.append('{0: > 5.1f} K'.format(T1))
 
-f = pd.DataFrame({'Concentrations': C, 'Temperatures': T})
-# plt.figure(figsize=(16, 10), dpi=80, facecolor='w', edgecolor='k')
-# plt.plot(T, C)
-# plt.grid(True)
-plt.show()
+def main(f):
+    # Перебор температур
+    dT = (TEND - TSTART) / NUMBER_T
+    c = C0
+    data = pd.DataFrame({'Concentration:': [C0], 'Temperature:': [TSTART]})
+    for Temp in range(NUMBER_T):
+        Temp0 = TSTART + dT * Temp
+        Temp1 = TSTART + dT * (Temp + 1)
 
-print(f)
+        c = kotes_quality(f,
+                          llim=0,
+                          rlim=TIME,
+                          quality=QUALITY,
+                          n=2,
+                          T0=Temp0,
+                          T1=Temp1,
+                          c0=c)
+        data = data.append({'Concentrations': [c], 'Temperatures': [Temp1]})
+
+        # # Цикл сходимости
+        # i = 0
+        # while True:
+        #     ntime = 4 * 2**i
+        #     dtime = TIME / ntime
+
+        #     # Цикл разбиений
+        #     s0 = 1
+        #     summa = 0
+
+        #     for ntime in range(ntime):
+        #         summa += kotes(f, n=2, a=dtime * ntime, b=dtime * (ntime + 1),T0=T0,T1=T1,C0=)
+        #     if abs(summa - s0) / s0 < quality and ntime> MAXTIMEPOINTS : break
+        #     i += 1
+
+    print(data)
+    # plt.figure(figsize=(16, 10), dpi=80, facecolor='w', edgecolor='k')
+    # plt.plot(T, C)
+    # plt.grid(True)
+    # plt.show()
+
+
+main(f)
