@@ -4,31 +4,40 @@ import matplotlib.pyplot as plt
 
 # Константы
 KB = 8.6165E-5
-E = 1
-VALUME_CHANGE_T = 1
+E = 0.175
+SPEED_CHANGE_T = 60
 C0 = 1
 K = 1
 
 # Входные данные
-TSTART = 300
-TEND = 400
-NUMBER_T = 10
+T0 = 300
+T1 = 400
+
 QUALITY = 0.1
 
-TIME = 100
-MAXTIMEPOINTS = 200
+TIME0 = 0
+TIME1 = 600
+TIME_N = 10
+MAXTIMEPOINTS = 32
 
 
-def f(*,t, T0, T1, c0):
-    temp = lambda t: T0 + (T1 - T0) * (1 - mt.exp(-t / VALUME_CHANGE_T))
-    k = lambda t: K*mt.exp(-E / (KB * temp(t)))
-    c = lambda t: c0 * mt.exp(-k(t) * t)
-    return c(t)
+class Time_function:
+    """Функция от 1 переменной с параметрами
+    """
+    def __init__(self, T0, T1) -> None:
+        """Constructor"""
+        self.T0 = T0
+        self.T1 = T1
+
+    def __call__(self, t):
+        temp = lambda t: self.T0 + (self.T1 - self.T0) * (1 - mt.exp(
+            -t / SPEED_CHANGE_T))
+        k = lambda t: K * mt.exp(-E / (KB * temp(t)))
+        return k(t)
 
 
-def kotes(f, a, b, n=3, **kwargs):
+def kotes(f, a, b, n=3):
     """Вычисляет интеграл методом Котеса
-
     Args:
         a (float): Левая граница
         b (float): Правая граница
@@ -38,9 +47,8 @@ def kotes(f, a, b, n=3, **kwargs):
     """
     dx = (b - a) / n
     A = []
-    for i in range(8):
+    for i in range(4):
         A.append(0)
-
     if n == 1:
         A[0] = 1
         A[1] = 1
@@ -57,46 +65,40 @@ def kotes(f, a, b, n=3, **kwargs):
         A[3] = 1
         N = 8
     suma = 0
-    for i in range(8):
-        suma += A[i] * f(t=a + dx * i, **kwargs)
+    for i in range(4):
+        # Изменить вызов функции в случае другой функции!!!
+        suma += A[i] * f(a + dx * i)
     return n * dx * suma / N
 
 
-def kotes_quality(f, llim, rlim, quality=0.1, n=3, **kwargs):
-    s0 = kotes(f, a=llim, b=rlim, n=n, **kwargs)
+def kotes_quality(f, a, b, quality=0.1, n=3):
+    s0 = kotes(f, a=a, b=b, n=n)
     i = 0
     while True:
-        npoints = 4 * 2**i
-        step = (llim - rlim) / npoints
+        x_n = 4 * 2**i
+        dx = (a - b) / x_n
         s = 0
-        for point in range(npoints):
-            s += kotes(f,
-                       a=llim + step * point,
-                       b=llim + step * (point + 1),
-                       n=n,
-                       **kwargs)
-        if abs((s - s0) / s0) < quality and npoints > MAXTIMEPOINTS: return s
+        for nx in range(x_n):
+            s += kotes(f, a=a + dx * nx, b=a + dx * (nx + 1), n=n)
+        if abs((s - s0) / s0) < quality and x_n > MAXTIMEPOINTS: return s
         i += 1
 
 
-def main(f):
-    # Перебор температур
-    dT = (TEND - TSTART) / NUMBER_T
-    c = C0
-    data = pd.DataFrame({'Concentration:': [C0], 'Temperature:': [TSTART]})
-    for Temp in range(NUMBER_T):
-        Temp0 = TSTART + dT * Temp
-        Temp1 = TSTART + dT * (Temp + 1)
+def main():
+    func_k = Time_function(T0, T1)
+    data = pd.DataFrame({'Temperature:': [TIME0], 'Concentration:': [C0]})
 
-        c = kotes_quality(f,
-                          llim=0,
-                          rlim=TIME,
-                          quality=QUALITY,
-                          n=2,
-                          T0=Temp0,
-                          T1=Temp1,
-                          c0=c)
-        data = data.append({'Concentrations': [c], 'Temperatures': [Temp1]})
+    # Перебор времени
+    dtime = (TIME1 - TIME0) / TIME_N
+    for ntime in range(TIME_N):
+        a_time = TIME0 + dtime * ntime
+        b_time = TIME0 + dtime * (ntime + 1)
+        k = kotes_quality(func_k, a=a_time, b=b_time, quality=QUALITY, n=2)
+
+        data = data.append({
+            'Concentrations': [C0 * mt.exp(-k)],
+            'Temperatures': [b_time]
+        })
 
     print(data)
     # plt.figure(figsize=(16, 10), dpi=80, facecolor='w', edgecolor='k')
@@ -105,4 +107,4 @@ def main(f):
     # plt.show()
 
 
-main(f)
+main()
