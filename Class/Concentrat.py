@@ -19,7 +19,7 @@ TIME = 100
 MAXTIMEPOINTS = 200
 
 
-def f(t, T0, T1, c0):
+def f(*,t, T0, T1, c0):
     temp = lambda t: T0 + (T1 - T0) * (1 - mt.exp(-t / VALUME_CHANGE_T))
     k = lambda t: K*mt.exp(-E / (KB * temp(t)))
     c = lambda t: c0 * mt.exp(-k(t) * t)
@@ -97,21 +97,6 @@ def main(f):
                           T1=Temp1,
                           c0=c)
         data = data.append({'Concentrations': [c], 'Temperatures': [Temp1]})
-
-        # # Цикл сходимости
-        # i = 0
-        # while True:
-        #     ntime = 4 * 2**i
-        #     dtime = TIME / ntime
-
-        #     # Цикл разбиений
-        #     s0 = 1
-        #     summa = 0
-
-        #     for ntime in range(ntime):
-        #         summa += kotes(f, n=2, a=dtime * ntime, b=dtime * (ntime + 1),T0=T0,T1=T1,C0=)
-        #     if abs(summa - s0) / s0 < quality and ntime> MAXTIMEPOINTS : break
-        #     i += 1
 
     print(data)
     # plt.figure(figsize=(16, 10), dpi=80, facecolor='w', edgecolor='k')
