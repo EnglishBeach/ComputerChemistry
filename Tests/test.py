@@ -1,3 +1,4 @@
+# %%
 def f(inarg,outarg):
     return inarg**outarg
 
@@ -11,3 +12,7 @@ def main():
     s = outf(f,5,inarg)
     print (s)
 main()
+
+# %%
+print('asd1w3')
+
