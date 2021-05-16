@@ -5,7 +5,7 @@ import math as mt
 X0 = 0
 Y0 = 0
 STEPS = 100
-DX = 0.02
+DX = 0.1
 
 
 def eiler(f, x, y, steps, dx=0.1):
@@ -113,16 +113,29 @@ def main_one_equation():
     plt.show()
 
 
-def main_system_equation(f):
+def main_system_equation():
     def numf(s):
-        numf = lambda x: x**s
+        numf = lambda x,y: x**s
         return numf
 
     number_eq = 3
-    systemf = [numf(i) for i in range(number_eq)]
+    systemf = [numf(i) for i in range(1,number_eq+1)]
 
-    for i in range(number_eq):
-        y0 = eiler(systemf[i], x=X0, y=Y0, steps=STEPS, dx=DX)
+    X=[]
+    Y=[]
+    x =X0
+    for j in range(1):
+        q= 2
+        # Перебор уравнений в системе
+        for i in range(number_eq):
+            answer = eiler(systemf[i], x=x, y=Y0, steps=q, dx=DX/q)
+            X.append ( answer[0][q])
+            Y.append ( answer[1][q])
+            print(answer)
+        data = pd.DataFrame({'X': X, 'Y': Y})
+        print(data)
+
+        x +=DX
 
 
-main_one_equation()
+main_system_equation()
