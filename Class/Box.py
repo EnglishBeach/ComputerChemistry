@@ -31,7 +31,7 @@ N = 10
 E0 =  1E-5
 a = 10
 
-D= 6.6262**2*1E-26/(8*m*a**2*1.60219)
+D : float = 6.6262**2*1E-26/(8*m*a**2*1.60219)
 C=2*mt.pi*a*mt.sqrt(2*m*1.60219)*1E+13/6.6262
 E1=En(1)*0.9995
 
@@ -52,7 +52,7 @@ energy8 = []
 for i in range(1,len(energy)+1):
     energy8.append(En(i))
     print('{0: <4} | {1: >7.3f}     | {2: >7.3f}'.format(i, energy[i-1], energy8[i-1]))
-         
-plt.scatter(number, energy, color = 'Red',marker = '*') 
+
+plt.scatter(number, energy, color = 'Red',marker = '*')
 plt.scatter (number, energy8, color = 'Blue')
 plt.show()
