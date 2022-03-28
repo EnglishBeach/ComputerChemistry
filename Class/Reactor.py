@@ -2,6 +2,8 @@ import random as rnd
 import math as m
 import pandas as pd
 import matplotlib.pyplot as plt
+import time
+timecheck0 =time.time()
 
 # Начальные параметры
 XMIN = 1
@@ -102,5 +104,8 @@ def main():
     plt.figure(figsize=(10, 10), dpi=80, facecolor='w', edgecolor='k')
     plt.plot(total_n, label="$f(x)$")
     plt.show()
+    timecheck1 =time.time()
+    print(timecheck1-timecheck0)
+
 
 main()

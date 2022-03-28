@@ -1,11 +1,13 @@
+import math as mt
+
 import matplotlib.pyplot as plt
 import pandas as pd
-import math as mt
 
 X0 = 0
 Y0 = 0
 STEPS = 100
 DX = 0.1
+
 
 
 
@@ -33,7 +35,6 @@ def eiler(f, x, y, steps, dx=0.1):
 
         # print('X: {0: >5.2f} Y: {1: >5.2f}'.format(x, y))
     return [Xlist, Ylist]
-
 def runge(f, x, y, steps, dx=0.1, type=1):
     """Решает задачу Коши методом Рунге-Кута для уравнения типа:
     dy/dx = F(x,y)
@@ -44,7 +45,6 @@ def runge(f, x, y, steps, dx=0.1, type=1):
         steps (int): Количество шагов.
         dx (int, optional): Шаг х.
         type (int, optional): Порядок метода. Defaults to 1.
-
     Returns:
         [listX, listY ]: массив значений X, Y
     """
@@ -70,9 +70,7 @@ def runge(f, x, y, steps, dx=0.1, type=1):
             k1 = dx * f(x, y)
             k2 = dx * f(x + dx / 2, y + k1 / 2)
             k3 = dx * f(x + dx, y + 2 * k2 - k1)
-
             y = y + (k1 + 4 * k2 + k3)/6
-
             x += dx
 
             Xlist.append(x)
@@ -88,6 +86,7 @@ def runge(f, x, y, steps, dx=0.1, type=1):
 
 
             y = y + (k1 + 2 * k2 + 2 * k3 + k4) / 6
+
             x += dx
 
             Xlist.append(x)
@@ -100,6 +99,7 @@ def main_one_equation():
     f = lambda x, y: x**2+5*x
     # Решение уравнения dy/dx = F(x,y)
     answer = runge(f, x=X0, y=Y0, steps=STEPS, dx=-DX, type=2)
+
     X = answer[0]
     Y = answer[1]
     X.reverse()
@@ -119,7 +119,6 @@ def main_system_equation():
     def numf(s):
         numf = lambda x,y: x**s
         return numf
-
 
     number_eq = 3
     systemf = [numf(i) for i in range(number_eq)]
