@@ -14,12 +14,12 @@ K = 1
 T0 = 300
 T1 = 450
 
-QUALITY = 0.01
+QUALITY = 0.001
 
 TIME0 = 0
 TIME1 = 600
 TIME_N = 10
-MAXTIMEPOINTS = 32
+MAXTIMEPOINTS = 64
 
 # %%
 class Time_function:
@@ -95,7 +95,7 @@ def main():
     for ntime in range(TIME_N):
         a_time = TIME0 + dtime * ntime
         b_time = TIME0 + dtime * (ntime + 1)
-        summ_k = kotes_quality(func_k, a=a_time, b=b_time, quality=QUALITY, n=2)
+        summ_k = kotes_quality(func_k, a=a_time, b=b_time, quality=QUALITY, n=1)
         # func_k.k0=k
         data = data.append(
             {
