@@ -35,6 +35,7 @@ def eiler(f, x, y, steps, dx=0.1):
 
         # print('X: {0: >5.2f} Y: {1: >5.2f}'.format(x, y))
     return [Xlist, Ylist]
+
 def runge(f, x, y, steps, dx=0.1, type=1):
     """Решает задачу Коши методом Рунге-Кута для уравнения типа:
     dy/dx = F(x,y)
@@ -70,6 +71,7 @@ def runge(f, x, y, steps, dx=0.1, type=1):
             k1 = dx * f(x, y)
             k2 = dx * f(x + dx / 2, y + k1 / 2)
             k3 = dx * f(x + dx, y + 2 * k2 - k1)
+
             y = y + (k1 + 4 * k2 + k3)/6
             x += dx
 
@@ -84,10 +86,13 @@ def runge(f, x, y, steps, dx=0.1, type=1):
             k3 = dx * f(x + dx, y + k2 / 2)
             k4 = dx * f(x + dx, y + k3)
 
+            y = y + dx * (k1 + 2 * k2 + 2 * k3 + k4) / 6
+
 
             y = y + (k1 + 2 * k2 + 2 * k3 + k4) / 6
 
             x += dx
+
 
             Xlist.append(x)
             Ylist.append(y)
@@ -95,7 +100,6 @@ def runge(f, x, y, steps, dx=0.1, type=1):
 
 
 def main_one_equation():
-
     f = lambda x, y: x**2+5*x
     # Решение уравнения dy/dx = F(x,y)
     answer = runge(f, x=X0, y=Y0, steps=STEPS, dx=-DX, type=2)
@@ -115,17 +119,19 @@ def main_one_equation():
     plt.grid(True)
     plt.show()
 
-def main_system_equation():
-    def numf(s):
-        numf = lambda x,y: x**s
+def main_system_equation(f):
+
+
+    def numf(s: float)->function:
+        numf = lambda x: x**s
         return numf
+
 
     number_eq = 3
     systemf = [numf(i) for i in range(number_eq)]
 
     for i in range(number_eq):
         y0 = eiler(systemf[i], x=X0, y=Y0, steps=STEPS, dx=DX)
-
 
     number_eq = 3
     systemf = [numf(i) for i in range(1,number_eq+1)]
@@ -145,6 +151,3 @@ def main_system_equation():
         print(data)
 
         x +=DX
-
-
-main_system_equation()
